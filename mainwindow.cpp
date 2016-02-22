@@ -2657,6 +2657,10 @@ void MainWindow::runInterfaceBoard()
             if (spikeScopeDialog) {
                 spikeScopeDialog->updateWaveform(numUsbBlocksToRead);
             }
+            // Trigger CV Scope to update with new waveform data.
+            if (conductionVelocityDialog) {
+                conductionVelocityDialog->updateWaveform(numUsbBlocksToRead);
+            }
 
             // If we are recording in Intan format and our data file has reached its specified
             // maximum length (e.g., 1 minute), close the current data file and open a new one.

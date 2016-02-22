@@ -375,7 +375,6 @@ void SpikePlot_CV::updateSpikePlot(double rms)
     // will be hard to read.  Only update once every few times we execute this function.
     if (rmsDisplayPeriod == 0) {
         rmsDisplayPeriod = 5;
-        cout << "!" << endl;
         savedRms = rms;
     } else {
         --rmsDisplayPeriod;

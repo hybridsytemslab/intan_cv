@@ -45,6 +45,7 @@ ConductionVelocityDialog::ConductionVelocityDialog(SignalProcessor *inSignalProc
     signalSources = inSignalSources;
 
     spikePlot_CV = new SpikePlot_CV(signalProcessor, initialChannel, this, this);
+    spikePlot_CV2 = new SpikePlot_CV(signalProcessor, initialChannel, this, this);
     currentChannel = initialChannel;
 
     resetToZeroButton = new QPushButton(tr("Zero"));
@@ -165,11 +166,18 @@ ConductionVelocityDialog::ConductionVelocityDialog(SignalProcessor *inSignalProc
     leftLayout->addWidget(displayGroupBox);
     leftLayout->addStretch(1);
 
+    QVBoxLayout *rightLayout = new QVBoxLayout;
+    rightLayout->addWidget(spikePlot_CV);
+    rightLayout->addStretch(1);
+
     QHBoxLayout *mainLayout = new QHBoxLayout;
     mainLayout->addLayout(leftLayout);
-    mainLayout->addWidget(spikePlot_CV);
+    mainLayout->addLayout(rightLayout);
+    mainLayout->addWidget(spikePlot_CV2);
+
     mainLayout->setStretch(0, 0);
     mainLayout->setStretch(1, 1);
+    mainLayout->setStretch(2, 2);
 
     setLayout(mainLayout);
 

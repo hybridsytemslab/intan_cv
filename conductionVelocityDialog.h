@@ -85,6 +85,7 @@ private:
     QSpinBox *thresholdSpinBox;
 
     SpikePlot_CV *spikePlot_CV;
+    SpikePlot_CV *spikePlot_CV2;
 };
 
 #endif // SPIKESCOPEDIALOG_H
