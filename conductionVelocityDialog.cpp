@@ -49,11 +49,14 @@ ConductionVelocityDialog::ConductionVelocityDialog(SignalProcessor *inSignalProc
     currentChannel = initialChannel;
 
     resetToZeroButton = new QPushButton(tr("Zero"));
+    resetToZeroButton2 = new QPushButton(tr("Zero"));
     clearScopeButton = new QPushButton(tr("Clear Scope"));
     applyToAllButton = new QPushButton(tr("Apply to Entire Port"));
 
     connect(resetToZeroButton, SIGNAL(clicked()),
             this, SLOT(resetThresholdToZero()));
+    connect(resetToZeroButton2, SIGNAL(clicked()),
+            this, SLOT(resetThresholdToZero2()));
     connect(clearScopeButton, SIGNAL(clicked()),
             this, SLOT(clearScope()));
     connect(applyToAllButton, SIGNAL(clicked()),
@@ -72,14 +75,46 @@ ConductionVelocityDialog::ConductionVelocityDialog(SignalProcessor *inSignalProc
     thresholdSpinBox->setSingleStep(5);
     thresholdSpinBox->setValue(0);
 
+
+    thresholdSpinBox2 = new QSpinBox();
+    thresholdSpinBox2->setRange(-5000, 5000);
+    thresholdSpinBox2->setSingleStep(5);
+    thresholdSpinBox2->setValue(0);
+
     connect(thresholdSpinBox, SIGNAL(valueChanged(int)),
             this, SLOT(setVoltageThreshold(int)));
+    connect(thresholdSpinBox2, SIGNAL(valueChanged(int)),
+            this, SLOT(setVoltageThreshold(int)));
+
+
+    channelSelectSpinBox = new QSpinBox();
+    channelSelectSpinBox->setRange(1,32);
+    channelSelectSpinBox->setSingleStep(1);
+    channelSelectSpinBox->setValue(1);
+
+    channelSelectSpinBox2 = new QSpinBox();
+    channelSelectSpinBox2->setRange(1,32);
+    channelSelectSpinBox2->setSingleStep(1);
+    channelSelectSpinBox2->setValue(1);
 
     QHBoxLayout *thresholdSpinBoxLayout = new QHBoxLayout;
     thresholdSpinBoxLayout->addWidget(resetToZeroButton);
     thresholdSpinBoxLayout->addWidget(thresholdSpinBox);
     thresholdSpinBoxLayout->addWidget(new QLabel(QSTRING_MU_SYMBOL + "V"));
     // thresholdSpinBoxLayout->addStretch(1);
+
+    QHBoxLayout *thresholdSpinBoxLayout2 = new QHBoxLayout;
+    thresholdSpinBoxLayout2->addWidget(resetToZeroButton2);
+    thresholdSpinBoxLayout2->addWidget(thresholdSpinBox2);
+    thresholdSpinBoxLayout2->addWidget(new QLabel(QSTRING_MU_SYMBOL + "V"));
+    // thresholdSpinBoxLayout->addStretch(1);
+
+    QHBoxLayout *channelSelectLayout = new QHBoxLayout;
+    channelSelectLayout->addWidget(channelSelectSpinBox);
+
+    QHBoxLayout *channelSelectLayout2 = new QHBoxLayout;
+    channelSelectLayout2->addWidget(channelSelectSpinBox2);
+
 
     digitalInputComboBox = new QComboBox();
     digitalInputComboBox->addItem(tr("Digital Input 0"));
@@ -139,14 +174,16 @@ ConductionVelocityDialog::ConductionVelocityDialog(SignalProcessor *inSignalProc
             this, SLOT(changeYScale(int)));
 
     QVBoxLayout *triggerLayout = new QVBoxLayout;
-    triggerLayout->addWidget(new QLabel(tr("Type:")));
-    triggerLayout->addWidget(triggerTypeComboBox);
+    triggerLayout->addWidget(new QLabel(tr("Channel Number:")));
+    triggerLayout->addLayout(channelSelectLayout);
     triggerLayout->addWidget(new QLabel(tr("Voltage Threshold:")));
     triggerLayout->addLayout(thresholdSpinBoxLayout);
-    triggerLayout->addWidget(new QLabel(tr("(or click in scope to set)")));
-    triggerLayout->addWidget(new QLabel(tr("Digital Source:")));
-    triggerLayout->addWidget(digitalInputComboBox);
-    triggerLayout->addWidget(edgePolarityComboBox);
+
+    QVBoxLayout *triggerLayout2 = new QVBoxLayout;
+    triggerLayout->addWidget(new QLabel(tr("Channel Number:")));
+    triggerLayout->addLayout(channelSelectLayout2);
+    triggerLayout2->addWidget(new QLabel(tr("Voltage Threshold:")));
+    triggerLayout2->addLayout(thresholdSpinBoxLayout2);
 
     QVBoxLayout *displayLayout = new QVBoxLayout;
     displayLayout->addWidget(new QLabel(tr("Voltage Scale:")));
@@ -154,15 +191,20 @@ ConductionVelocityDialog::ConductionVelocityDialog(SignalProcessor *inSignalProc
     displayLayout->addWidget(numSpikesComboBox);
     displayLayout->addWidget(clearScopeButton);
 
-    QGroupBox *triggerGroupBox = new QGroupBox(tr("Trigger Settings"));
+    QGroupBox *triggerGroupBox = new QGroupBox(tr("Start Channel"));
     triggerGroupBox->setLayout(triggerLayout);
+
+
+    QGroupBox *triggerGroupBox2 = new QGroupBox(tr("End Channel"));
+    triggerGroupBox2->setLayout(triggerLayout2);
 
     QGroupBox *displayGroupBox = new QGroupBox(tr("Display Settings"));
     displayGroupBox->setLayout(displayLayout);
 
     QVBoxLayout *leftLayout = new QVBoxLayout;
     leftLayout->addWidget(triggerGroupBox);
-    leftLayout->addWidget(applyToAllButton);
+    leftLayout->addWidget(triggerGroupBox2);
+    //leftLayout->addWidget(applyToAllButton);
     leftLayout->addWidget(displayGroupBox);
     leftLayout->addStretch(1);
 
@@ -218,6 +260,10 @@ void ConductionVelocityDialog::setTriggerType(int index)
 void ConductionVelocityDialog::resetThresholdToZero()
 {
     thresholdSpinBox->setValue(0);
+}
+void ConductionVelocityDialog::resetThresholdToZero2()
+{
+    thresholdSpinBox2->setValue(0);
 }
 
 void ConductionVelocityDialog::updateWaveform(int numBlocks)

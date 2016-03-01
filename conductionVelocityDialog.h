@@ -58,6 +58,7 @@ private slots:
     void changeYScale(int index);
     void setTriggerType(int index);
     void resetThresholdToZero();
+    void resetThresholdToZero2();
     void setNumSpikes(int index);
     void clearScope();
     void setDigitalInput(int index);
@@ -73,6 +74,7 @@ private:
     SignalChannel *currentChannel;
 
     QPushButton *resetToZeroButton;
+    QPushButton *resetToZeroButton2;
     QPushButton *clearScopeButton;
     QPushButton *applyToAllButton;
 
@@ -83,6 +85,10 @@ private:
     QComboBox *yScaleComboBox;
 
     QSpinBox *thresholdSpinBox;
+    QSpinBox *thresholdSpinBox2;
+
+    QSpinBox *channelSelectSpinBox;
+    QSpinBox *channelSelectSpinBox2;
 
     SpikePlot_CV *spikePlot_CV;
     SpikePlot_CV *spikePlot_CV2;
